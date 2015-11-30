@@ -58,14 +58,14 @@ parse_param $@
 
 mkdir -p ${TGTDIR}; cd ${TGTDIR}
 git init
-if [ -z "${IS_HTTP}" ]; then
-	git remote add -f origin ${GIT_SRC}
-else
-	git remote add set-url origin ${GIT_SRC}
-fi
+git remote add -f origin ${GIT_SRC}
 git fetch origin
 git config core.sparseCheckout true
 test -n "${SUBDIR}" && echo "${SUBDIR}" > .git/info/sparse-checkout
-test ${TGTTAG} != master && git checkout -b br_${TGTTAG} ${TGTTAG}
+if [ ${TGTTAG} = "master" ]; then
+	git checkout master
+else
+	git checkout -b br_${TGTTAG} ${TGTTAG}
+fi
 
 
